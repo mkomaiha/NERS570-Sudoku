@@ -74,9 +74,8 @@ def getBoard(grade=0, id=None):
     board_data = {'board': [], 'difficulty': '', 'solution': []}
     r = requests.post(
         'https://www.sudoku-puzzles-online.com/sudoku/enter-a-solution-sudoku.php', data=data)
-    soup = BeautifulSoup(r.text, 'html.parser')
-
     # Cell string board
+    soup = BeautifulSoup(r.text, 'html.parser')
     boardStrCell = soup.find('input', attrs={'name': 'Eno'}).get('value')
     boardId = int(soup.find('input', attrs={'name': 'TextNum'}).get('value'))
     boardGrade = int(soup.find(
@@ -97,6 +96,7 @@ def getBoard(grade=0, id=None):
     nSolutions = int(re.search(
         'Number of solutions: ([0-9]+)', boardTest).group(1))
     assert nSolutions == 1, 'No unique solution!'
+    # TODO: Use the above api for the solution instead of the one below
 
     # Get solution
     data = {
