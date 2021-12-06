@@ -8,12 +8,12 @@ class BasicTestSuite(unittest.TestCase):
 
     def test_constructor(self):
         board = sudoku.Sudoku()
-        assert(board.board)
-        assert(board.boardStr)
-        assert(board.boardId)
-        assert(board.solution)
-        assert(board.difficulty)
-        assert(board.est_difficulty)
+        assert(hasattr(board, "board"))
+        assert(hasattr(board, "boardStr"))
+        assert(hasattr(board, "boardId"))
+        assert(hasattr(board, "solution"))
+        assert(hasattr(board, "difficulty"))
+        assert(hasattr(board, "est_difficulty"))
 
     def test_difficulty(self):
         board = sudoku.Sudoku(0)

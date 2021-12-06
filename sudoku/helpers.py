@@ -1,10 +1,16 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+from .constants import BOX_SIZE, SIZE, SUDOKU_API_BASE_URI
 
-SUDOKU_API_BASE_URI = 'https://sugoku.herokuapp.com'
-SIZE = 9
-BOX_SIZE = 3
+
+def getBoxIdxs(r: int, c: int):
+    i0 = (r // BOX_SIZE) * BOX_SIZE  # get first row index
+    j0 = (c // BOX_SIZE) * BOX_SIZE  # get first column index
+    for i in range(i0, i0 + BOX_SIZE):
+        for j in range(j0, j0 + BOX_SIZE):
+            # if (i != r or j != c):
+            yield (i, j)
 
 
 def boardToString(board):
