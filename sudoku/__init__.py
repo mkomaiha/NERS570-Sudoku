@@ -1,1 +1,1 @@
-from .sudoku import Sudoku
+from sudoku.sudoku import Sudoku

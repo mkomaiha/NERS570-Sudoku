@@ -1,7 +1,16 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-from .constants import BOX_SIZE, SIZE, SUDOKU_API_BASE_URI
+from sudoku.constants import BOX_SIZE, SIZE, SUDOKU_API_BASE_URI
+
+
+def nLoops(loops, start, stop, func, prev):
+    for var in range(start, stop):
+        cv = [*prev, var]
+        if (loops == 1):
+            func(cv)
+        else:
+            nLoops(loops-1, var+1, stop, func, cv)
 
 
 def getBoxIdxs(r: int, c: int):
