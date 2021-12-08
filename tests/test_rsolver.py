@@ -14,11 +14,11 @@ class SolveTestSuite(unittest.TestCase):
 
     @ parameterized.expand([
         ("Basic", 0, 3),
-        # ("Medium", 1, 4000),
-        # ("Hard", 2, 10000),
-        # ("Extreme", 3, 10000),
-        # ("ExtremeEasy", 3, 1),
-        # ("ExtremeRandom", 3)
+        ("Medium", 1, 4000),
+        ("Hard", 2, 10000),
+        ("Extreme", 3, 10000),
+        ("ExtremeEasy", 3, 1),
+        ("ExtremeRandom", 3)
     ])
     def test_solve(self, name, difficulty, boardId=randint(1, 10000)):
         board = RS(difficulty, boardId)

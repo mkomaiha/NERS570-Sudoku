@@ -23,20 +23,27 @@ class RS(Sudoku):
                     return False
         return True
 
-    def solve(self, printflag=False):
+    def r_solve(self, printflag=False):
         for r in range(SIZE):
             for c in range(SIZE):
                 if self.solved[r, c] == 0:
                     for n in range(1, 10):
                         if self.possible(r, c, n):
                             self.solved[r, c] = n
-                            self.solve()
+                            # Prevent from reseting the board
+                            if (self.r_solve(printflag)):
+                                return True
                             self.solved[r, c] = 0
-                    return
+                    return False
 
         if printflag == True:
             print('recursive results:')
             print(self.solved)
+        return True
+
+    def solve(self, printflag=False):
+        self.r_solve(printflag)
+        return self.solved
 
     def candidates(self):
         # create a solved of viable candidates for each position
