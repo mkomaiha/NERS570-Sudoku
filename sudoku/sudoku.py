@@ -14,10 +14,7 @@ class Sudoku():
         self.solution = np.array(board['solution'])
         self.difficulty = board['difficulty']
         self.est_difficulty = board['est_difficulty']
-
-        self.solved = np.copy(self.board)
-        self.possibilities = np.ones(
-            (*np.shape(self.board), SIZE), dtype=int)  # Use bool instead?
+        self.reset()
 
     def __repr__(self) -> str:
         out = f'Sudoku {self.difficulty} no {self.boardId} ({self.est_difficulty})\nBoard:\n'
@@ -28,6 +25,6 @@ class Sudoku():
         return out
 
     def reset(self):
-        self.solved = self.board
+        self.solved = np.copy(self.board)
         self.possibilities = np.ones(
-            (*np.shape(self.board), SIZE), dtype=int)
+            (*np.shape(self.board), SIZE), dtype=int)  # Use bool instead?

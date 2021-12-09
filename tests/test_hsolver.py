@@ -12,10 +12,10 @@ LOGGER = logging.getLogger(__name__)
 class SolveTestSuite(unittest.TestCase):
     """Solve test cases."""
     @parameterized.expand([
-        ("Basic", 0, 3),
-        ("Medium", 1, 8000),
-        ("Hard", 2, 9999),
-        ("Extreme", 3, 10000),
+        ("Basic", 0, 5000),
+        ("Medium", 1, 5000),
+        ("Hard", 2, 5000),
+        ("Extreme", 3, 5000),
         ("ExtremeEasy", 3, 1),
         ("ExtremeRandom", 3)
     ])
