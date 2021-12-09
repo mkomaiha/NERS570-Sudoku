@@ -106,7 +106,6 @@ class HS(Sudoku):
                 # naked singles
                 if (len(idxOfWhere) == countSame and not np.any((masked < countSame) & (masked > 0))):
                     found = 0
-                    # print(idxOfWhere)
                     for (row, col) in idxOfWhere:
                         # No changes
                         if (np.sum(self.possibilities[row, col]) == countSame):
