@@ -1,9 +1,9 @@
-from context import RS
+from context import HS
 from helpers import timedBoardSolve, timedBoardDiffSolve
 
 for diff in range(4):
-    timedBoardSolve(RS(diff, 11), 1)
+    timedBoardSolve(HS(diff, 11), 1)
 
 # Times vary a lot w/in difficulty!
 for diff in range(4):
-    timedBoardDiffSolve(RS, diff, 5)
+    timedBoardDiffSolve(HS, diff, 5)

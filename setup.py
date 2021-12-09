@@ -20,5 +20,5 @@ setup(
     author_email='mkomaiha@umich.edu, ninglu@umich.edu',
     url='https://github.com/mkomaiha/NERS570-Sudoku',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs', 'slrm'))
 )

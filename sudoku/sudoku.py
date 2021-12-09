@@ -26,3 +26,6 @@ class Sudoku():
         self.solved = np.copy(self.board)
         self.possibilities = np.ones(
             (*np.shape(self.board), SIZE), dtype=int)  # Use bool instead?
+
+    def solve(self):
+        print("Inherited classes override the base class's solve")
