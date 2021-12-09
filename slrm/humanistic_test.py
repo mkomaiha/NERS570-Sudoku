@@ -2,8 +2,14 @@ from context import HS
 from helpers import timedBoardSolve, timedBoardDiffSolve
 
 for diff in range(4):
-    timedBoardSolve(HS(diff, 11), 1)
+    try:
+        timedBoardSolve(HS(diff, 11), 10)
+    except:
+        print(f"Failed difficulty {diff}")
 
 # Times vary a lot w/in difficulty!
 for diff in range(4):
-    timedBoardDiffSolve(HS, diff, 5)
+    try:
+        timedBoardDiffSolve(HS, diff, 10)
+    except:
+        print(f"Failed difficulty {diff}")
