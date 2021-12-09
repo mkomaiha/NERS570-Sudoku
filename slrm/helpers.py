@@ -1,5 +1,4 @@
 from time import time
-from random import randint
 import numpy as np
 
 
