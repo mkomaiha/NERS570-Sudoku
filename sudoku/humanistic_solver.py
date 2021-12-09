@@ -48,7 +48,7 @@ class HS(Sudoku):
                 boolWhere = self.possibilities[i0:i0+BOX_SIZE,
                                                j0:j0+BOX_SIZE,
                                                valIdx] == 1
-                idxOfWhere = np.asarray(np.where(boolWhere)).T + [i0, j0]
+                idxOfWhere = np.asarray(np.where(boolWhere)).T + np.asarray([i0, j0])
                 row, col = idxOfWhere[0]
                 print(f"Found LR {valIdx + 1} at ({row}, {col})")
                 self.update_solution(row, col, valIdx)
@@ -86,7 +86,7 @@ class HS(Sudoku):
             print(f"{countSame} of same checking box", box)
             i0 = (box // BOX_SIZE) * BOX_SIZE
             j0 = (box % BOX_SIZE) * BOX_SIZE
-            shift = [i0, j0]
+            shift = np.asarray([i0, j0])
             flip = False
             roi = self.possibilities[i0:i0+BOX_SIZE,
                                      j0:j0+BOX_SIZE]
@@ -125,14 +125,14 @@ class HS(Sudoku):
             # Gain any thing from this??
             if box in [1, 2, 4]:
                 for j in range(j0, j0+BOX_SIZE):
-                    shift = [0, j]
+                    shift = np.asarray([0, j])
                     print(f"{countSame} of same checking column", j)
                     roi = self.possibilities[:, j]
                     nLoops(countSame, 0, SIZE, doStuff, [])
             elif box in [0, 5, 6]:
                 flip = True
                 for i in range(i0, i0+BOX_SIZE):
-                    shift = [i, 0]
+                    shift = np.asarray([i, 0])
                     print(f"{countSame} of same checking row", i)
                     roi = self.possibilities[i, :]
                     nLoops(countSame, 0, SIZE, doStuff, [])
