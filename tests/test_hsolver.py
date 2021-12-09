@@ -22,7 +22,7 @@ class SolveTestSuite(unittest.TestCase):
     def test_solve(self, name, difficulty, boardId=randint(1, 10000)):
         board = HS(difficulty, boardId)
         totalTime = 0
-        nRepeats = 10
+        nRepeats = 1
         for i in range(nRepeats):
             start = time()
             board.solve()

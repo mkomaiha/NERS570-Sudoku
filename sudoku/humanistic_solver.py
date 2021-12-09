@@ -86,6 +86,8 @@ class HS(Sudoku):
             print(f"{countSame} of same checking box", box)
             i0 = (box // BOX_SIZE) * BOX_SIZE
             j0 = (box % BOX_SIZE) * BOX_SIZE
+            shift = [i0, j0]
+            flip = False
             roi = self.possibilities[i0:i0+BOX_SIZE,
                                      j0:j0+BOX_SIZE]
 
@@ -93,17 +95,25 @@ class HS(Sudoku):
                 nonlocal changes
                 mask = np.zeros((SIZE, 1), dtype=int)
                 mask[vals] = 1
-                masked = np.squeeze((roi @ mask), axis=-1)
+                masked = roi @ mask
+                if (len(np.shape(masked)) > 2):
+                    masked = np.squeeze(masked, axis=-1)
                 boolWhere = masked == countSame
-                idxOfWhere = np.asarray(np.where(boolWhere)).T + [i0, j0]
+                if (flip):
+                    boolWhere = boolWhere.T
+                idxOfWhere = np.asarray(np.where(boolWhere)).T + shift
                 # Assumes elimination runs first, shouldn't find
                 # naked singles
                 if (len(idxOfWhere) == countSame and not np.any((masked < countSame) & (masked > 0))):
                     found = 0
+                    # print(idxOfWhere)
                     for (row, col) in idxOfWhere:
                         # No changes
                         if (np.sum(self.possibilities[row, col]) == countSame):
                             continue
+                        # TODO: Change this to set to 0 isntead that way even if
+                        # two threads try to change it is okay bc will both change to 0
+                        # no methods bring a possibility back to 1
                         self.possibilities[row, col] = (
                             self.possibilities[row, col] & mask.T)[0]
                         found += 1
@@ -113,6 +123,20 @@ class HS(Sudoku):
                             f"Found {len(vals)} of same {np.array(vals)+1} at {[list(loc) for loc in idxOfWhere]}")
                     changes += found
             nLoops(countSame, 0, SIZE, doStuff, [])
+            # Gain any thing from this??
+            if box in [1, 2, 4]:
+                for j in range(j0, j0+BOX_SIZE):
+                    shift = [0, j]
+                    print(f"{countSame} of same checking column", j)
+                    roi = self.possibilities[:, j]
+                    nLoops(countSame, 0, SIZE, doStuff, [])
+            elif box in [0, 5, 6]:
+                flip = True
+                for i in range(i0, i0+BOX_SIZE):
+                    shift = [i, 0]
+                    print(f"{countSame} of same checking row", i)
+                    roi = self.possibilities[i, :]
+                    nLoops(countSame, 0, SIZE, doStuff, [])
         return changes > 0
 
     def twins(self):
@@ -144,8 +168,8 @@ class HS(Sudoku):
                     self.updatePossib(row, col, val-1)
         total = SIZE**2
         # TODO: IMPLEMENT MORE STRATEGIES LIKE TWINS AND TRIPLES
-        strategies = [self.elimination,
-                      self.loneranger, self.twins, self.triples]
+        strategies = [self.elimination, self.loneranger,
+                      self.twins, self.triples]
         while (np.count_nonzero(self.solved) < total):
             for strategy in strategies:
                 if strategy():
