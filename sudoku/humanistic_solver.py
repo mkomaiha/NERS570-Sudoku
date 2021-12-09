@@ -1,36 +1,12 @@
-from copy import deepcopy
-from typing import List, Tuple, Set
 from sudoku.helpers import getBoard, validateBoard, boardToString, getBoxIdxs, nLoops
 from sudoku.constants import BOX_SIZE, SIZE
 import numpy as np
+from sudoku import Sudoku
 
 
-class Sudoku():
+class HS(Sudoku):
     def __init__(self, grade=0, id=None):
-        board = getBoard(grade, id)
-        self.board = np.array(board['board'])
-        self.boardStr = board['boardStr']
-        self.boardId = board['boardId']
-        self.solution = np.array(board['solution'])
-        self.difficulty = board['difficulty']
-        self.est_difficulty = board['est_difficulty']
-
-        self.solved = np.copy(self.board)
-        self.possibilities = np.ones(
-            (*np.shape(self.board), SIZE), dtype=int)  # Use bool instead?
-
-    def __repr__(self) -> str:
-        out = f'Sudoku {self.difficulty} no {self.boardId} ({self.est_difficulty})\nBoard:\n'
-        out += str(self.board) + '\n'
-        out += f'Board str: {self.boardStr}\n'
-        out += 'Solution:\n'
-        out += str(self.solution) + '\n'
-        return out
-
-    def reset(self):
-        self.solved = self.board
-        self.possibilities = np.ones(
-            (*np.shape(self.board), SIZE), dtype=int)
+        super().__init__(grade, id)
 
     def update_solution(self, row, col, valIdx):
         # Thread Lock
@@ -167,10 +143,6 @@ class Sudoku():
                 if (val != 0):
                     self.updatePossib(row, col, val-1)
         total = SIZE**2
-        # print(self)
-        # print(self.twins())
-        # print(self)
-        # print(self.elimination())
         # TODO: IMPLEMENT MORE STRATEGIES LIKE TWINS AND TRIPLES
         strategies = [self.elimination,
                       self.loneranger, self.twins, self.triples]
@@ -185,59 +157,3 @@ class Sudoku():
         print(self.solution)
         print(self.solved == self.solution)
         print(np.count_nonzero(self.solved))
-
-        #     if(!changed) {
-        #     #pragma omp parallel for schedule(dynamic)
-        #     for(int thread_id = 0; thread_id < board->dim; thread_id++) {
-        #         #pragma omp atomic update
-        #         changed |= twins(thread_id, ROW);
-        #         #pragma omp atomic update
-        #         changed |= twins(thread_id, COL);
-        #         #pragma omp atomic update
-        #         changed |= twins(thread_id, BLOCK);
-        #     }
-        #     }
-
-        #     if(!changed) {
-        #     #pragma omp parallel for
-        #     for(int thread_id = 0; thread_id < board->dim; thread_id++) {
-        #         #pragma omp atomic update
-        #         changed |= triplets(thread_id, ROW);
-        #         #pragma omp atomic update
-        #         changed |= triplets(thread_id, COL);
-        #         #pragma omp atomic update
-        #         changed |= triplets(thread_id, BLOCK);
-        #     }
-        #     }
-
-        #     if(!changed) {
-        #     make_guess();
-        #     }
-        # }
-        # }
-    # def get_row(self, r: int) -> List[int]:
-    #     return self.grid[r]
-
-  #  def get_box_inds(self, r: int, c: int) -> List[Tuple[int,int]]:
-  #       inds_box = []
-  #       i0 = (r // BOX_SIZE) * BOX_SIZE  # get first row index
-  #       j0 = (c // BOX_SIZE) * BOX_SIZE  # get first column index
-  #       for i in range(i0, i0 + BOX_SIZE):
-  #           for j in range(j0, j0 + BOX_SIZE):
-  #               inds_box.append((i, j))
-  #       return inds_box
-
-  #  def get_box(self, r: int, c: int) -> List[int]:
-  #       box = []
-  #       for i, j in self.get_box_inds(r, c):
-  #           box.append(self.grid[i][j])
-  #       return box
-
-  #  def find_options(self, r: int, c: int) -> Set:
-  #      nums = set(range(1, SIZE + 1))
-  #      set_row = set(self.get_row(r))
-  #      set_col = set(self.get_col(c))
-  #      set_box = set(self.get_box(r, c))
-  #      used = set_row | set_col | set_box
-  #      valid = nums.difference(used)
-  #      return valid

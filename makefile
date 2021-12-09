@@ -2,6 +2,6 @@ init:
 	pip install -r requirements.txt
 
 test:
-	py.test tests
+	pytest -vvv --log-cli-level=INFO tests
 
 .PHONY: init test
