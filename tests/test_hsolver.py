@@ -12,12 +12,12 @@ LOGGER = logging.getLogger(__name__)
 class SolveTestSuite(unittest.TestCase):
     """Solve test cases."""
     @parameterized.expand([
-        ("Basic", 0, 5000),
-        ("Medium", 1, 5000),
-        ("Hard", 2, 5000),
-        ("Extreme", 3, 5000),
-        ("ExtremeEasy", 3, 1),
-        ("ExtremeRandom", 3)
+        ("Basic", 0, 11),
+        ("Medium", 1, 11),
+        ("Hard", 2, 11),
+        ("Extreme", 3, 11),
+        # ("ExtremeEasy", 3, 1),
+        # ("ExtremeRandom", 3)
     ])
     def test_solve(self, name, difficulty, boardId=randint(1, 10000)):
         board = HS(difficulty, boardId)
