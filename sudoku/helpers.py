@@ -29,18 +29,18 @@ def boardToString(board):
             output += f"{n if n else '.'}"
     return output
 
-
-def stringToBoard(boardStr):
-    board = []
-    inList = []
-    for i, n in enumerate(boardStr):
-        if n == '.':
-            n = 0
-        inList.append(int(n))
-        if (i % 9 == 8):
-            board.append(inList)
-            inList = []
-    return board
+# Use Corrected instead
+# def stringToBoard(boardStr):
+#     board = []
+#     inList = []
+#     for i, n in enumerate(boardStr):
+#         if n == '.':
+#             n = 0
+#         inList.append(int(n))
+#         if (i % 9 == 8):
+#             board.append(inList)
+#             inList = []
+#     return board
 
 
 # For boardStrings that are cellIdxed i.e.
@@ -124,12 +124,12 @@ def getBoard(grade=0, id=None):
     board_data['difficulty'] = list(difficulty[grade].values())[0]
     return board_data
 
-
-def validateBoard(board):
-    data = {
-        'board': str(board)
-    }
-    validated = requests.post(
-        f'{SUDOKU_API_BASE_URI}/validate', data=data).json()
-    # 'unsolved', 'broken', 'solved'
-    return validated['status']
+# Are not validating
+# def validateBoard(board):
+#     data = {
+#         'board': str(board)
+#     }
+#     validated = requests.post(
+#         f'{SUDOKU_API_BASE_URI}/validate', data=data).json()
+#     # 'unsolved', 'broken', 'solved'
+#     return validated['status']

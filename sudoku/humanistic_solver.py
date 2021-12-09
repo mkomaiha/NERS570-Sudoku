@@ -1,4 +1,4 @@
-from sudoku.helpers import getBoard, validateBoard, boardToString, getBoxIdxs, nLoops
+from sudoku.helpers import getBoxIdxs, nLoops
 from sudoku.constants import BOX_SIZE, SIZE
 import numpy as np
 from sudoku import Sudoku

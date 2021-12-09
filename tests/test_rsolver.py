@@ -33,6 +33,21 @@ class SolveTestSuite(unittest.TestCase):
         LOGGER.info(f"{name} - {board.difficulty} ({board.boardId})")
         LOGGER.info(f"Elapsed {totalTime/nRepeats}")
 
+    @ parameterized.expand([
+        ("Basic", 0, 11)
+    ])
+    def test_solve_print(self, name, difficulty, boardId=randint(1, 10000)):
+        board = RS(difficulty, boardId)
+        totalTime = 0
+        nRepeats = 1
+        start = time()
+        board.solve(True)
+        totalTime += time() - start
+        assert(np.all(board.solved == board.solution))
+        board.reset()
+        LOGGER.info(f"{name} - {board.difficulty} ({board.boardId})")
+        LOGGER.info(f"Elapsed {totalTime/nRepeats}")
+
 
 if __name__ == '__main__':
     unittest.main()
