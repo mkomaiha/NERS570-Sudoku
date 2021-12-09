@@ -11,14 +11,14 @@ class HS(Sudoku):
     def update_solution(self, row, col, valIdx):
         # Thread Lock
         self.solved[row, col] = valIdx + 1
-        print(f"Setting ({row}, {col}) to {valIdx+1}")
+        # print(f"Setting ({row}, {col}) to {valIdx+1}")
         self.updatePossib(row, col, valIdx)
 
     def elimination(self):
         # Elimination over all the BOXES
         changes = 0
         for box in range(SIZE):
-            print("Elimination on box", box)
+            # print("Elimination on box", box)
             for idx in range(SIZE):
                 row = (idx // BOX_SIZE) + (box // BOX_SIZE) * BOX_SIZE
                 col = (idx % BOX_SIZE) + (box % BOX_SIZE) * BOX_SIZE
@@ -28,7 +28,7 @@ class HS(Sudoku):
                 # Backtrack if no possible?
                 if (len(possible) == 1):
                     valIdx = possible[0]
-                    print(f"Found elimination {valIdx + 1} at ({row}, {col})")
+                    # print(f"Found elimination {valIdx + 1} at ({row}, {col})")
                     self.update_solution(row, col, valIdx)
                     changes += 1
         return changes > 0
@@ -37,7 +37,7 @@ class HS(Sudoku):
         changes = 0
         # Lone ranger over all the BOXES
         for box in range(SIZE):
-            print("Lone ranger checking box", box)
+            # print("Lone ranger checking box", box)
             i0 = (box // BOX_SIZE) * BOX_SIZE
             j0 = (box % BOX_SIZE) * BOX_SIZE
             possOccurances = np.sum(
@@ -48,33 +48,34 @@ class HS(Sudoku):
                 boolWhere = self.possibilities[i0:i0+BOX_SIZE,
                                                j0:j0+BOX_SIZE,
                                                valIdx] == 1
-                idxOfWhere = np.asarray(np.where(boolWhere)).T + np.asarray([i0, j0])
+                idxOfWhere = np.asarray(
+                    np.where(boolWhere)).T + np.asarray([i0, j0])
                 row, col = idxOfWhere[0]
-                print(f"Found LR {valIdx + 1} at ({row}, {col})")
+                # print(f"Found LR {valIdx + 1} at ({row}, {col})")
                 self.update_solution(row, col, valIdx)
                 changes += 1
             if box in [1, 2, 4]:
                 for j in range(j0, j0+BOX_SIZE):
-                    print("Lone ranger checking columns", j)
+                    # print("Lone ranger checking columns", j)
                     possOccurances = np.sum(
                         self.possibilities[:, j], axis=(0,)) == 1
                     possible = np.nonzero(possOccurances)[0]
                     for valIdx in possible:
                         boolWhere = self.possibilities[:, j, valIdx] == 1
                         row = np.asarray(np.where(boolWhere)).T[0, 0]
-                        print(f"Found LR {valIdx + 1} at ({row}, {j})")
+                        # print(f"Found LR {valIdx + 1} at ({row}, {j})")
                         self.update_solution(row, j, valIdx)
                         changes += 1
             elif box in [0, 5, 6]:
                 for i in range(i0, i0+BOX_SIZE):
-                    print("Lone ranger checking rows", i)
+                    # print("Lone ranger checking rows", i)
                     possOccurances = np.sum(
                         self.possibilities[i, :], axis=(0,)) == 1
                     possible = np.nonzero(possOccurances)[0]
                     for valIdx in possible:
                         boolWhere = self.possibilities[i, :, valIdx] == 1
                         col = np.asarray(np.where(boolWhere)).T[0, 0]
-                        print(f"Found LR {valIdx + 1} at ({i}, {col})")
+                        # print(f"Found LR {valIdx + 1} at ({i}, {col})")
                         self.update_solution(i, col, valIdx)
                         changes += 1
         return changes > 0
@@ -83,7 +84,7 @@ class HS(Sudoku):
         changes = 0
         # Lone ranger over all the BOXES
         for box in range(SIZE):
-            print(f"{countSame} of same checking box", box)
+            # print(f"{countSame} of same checking box", box)
             i0 = (box // BOX_SIZE) * BOX_SIZE
             j0 = (box % BOX_SIZE) * BOX_SIZE
             shift = np.asarray([i0, j0])
@@ -116,24 +117,24 @@ class HS(Sudoku):
                         self.possibilities[row, col] = (
                             self.possibilities[row, col] & mask.T)[0]
                         found += 1
-                    if (found):
-                        print(self.solved)
-                        print(
-                            f"Found {len(vals)} of same {np.array(vals)+1} at {[list(loc) for loc in idxOfWhere]}")
+                    # if (found):
+                    #     print(self.solved)
+                    #     print(
+                    #         f"Found {len(vals)} of same {np.array(vals)+1} at {[list(loc) for loc in idxOfWhere]}")
                     changes += found
             nLoops(countSame, 0, SIZE, doStuff, [])
             # Gain any thing from this??
             if box in [1, 2, 4]:
                 for j in range(j0, j0+BOX_SIZE):
                     shift = np.asarray([0, j])
-                    print(f"{countSame} of same checking column", j)
+                    # print(f"{countSame} of same checking column", j)
                     roi = self.possibilities[:, j]
                     nLoops(countSame, 0, SIZE, doStuff, [])
             elif box in [0, 5, 6]:
                 flip = True
                 for i in range(i0, i0+BOX_SIZE):
                     shift = np.asarray([i, 0])
-                    print(f"{countSame} of same checking row", i)
+                    # print(f"{countSame} of same checking row", i)
                     roi = self.possibilities[i, :]
                     nLoops(countSame, 0, SIZE, doStuff, [])
         return changes > 0
@@ -176,7 +177,7 @@ class HS(Sudoku):
             else:
                 print("stuck!")
                 break
-        print(self.solved)
-        print(self.solution)
-        print(self.solved == self.solution)
-        print(np.count_nonzero(self.solved))
+        # print(self.solved)
+        # print(self.solution)
+        # print(self.solved == self.solution)
+        # print(np.count_nonzero(self.solved))
